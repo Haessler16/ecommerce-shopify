@@ -9,28 +9,29 @@ import { useCartStore } from '@/store/cartStore'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/grid'
+import { iProduct } from '@/utils/interfaces/Product'
 
-const products = [
-  { id: 1, image: '/girl_1.png', price: 176.98, quantity: 1 },
-  { id: 2, image: '/girl_2.png', price: 156.98, quantity: 1 },
-  { id: 3, image: '/girl_3.png', price: 176.98, quantity: 1 },
-  { id: 4, image: '/girl_4.png', price: 164.98, quantity: 1 },
-  { id: 5, image: '/girl_1.png', price: 156.98, quantity: 1 },
-  { id: 6, image: '/girl_2.png', price: 146.98, quantity: 1 },
-  { id: 7, image: '/girl_3.png', price: 176.98, quantity: 1 },
-  { id: 8, image: '/girl_4.png', price: 165.98, quantity: 1 },
-  // Duplicated items for more slides
-  { id: 9, image: '/girl_1.png', price: 176.98, quantity: 1 },
-  { id: 10, image: '/girl_2.png', price: 156.98, quantity: 1 },
-  { id: 11, image: '/girl_3.png', price: 176.98, quantity: 1 },
-  { id: 12, image: '/girl_4.png', price: 164.98, quantity: 1 },
-  { id: 13, image: '/girl_1.png', price: 156.98, quantity: 1 },
-  { id: 14, image: '/girl_2.png', price: 146.98, quantity: 1 },
-  { id: 15, image: '/girl_3.png', price: 176.98, quantity: 1 },
-  // { id: 16, image: '/girl_4.png', price: 165.98, quantity: 1 },
-]
+// const products = [
+//   { id: 1, image: '/girl_1.png', price: 176.98, quantity: 1 },
+//   { id: 2, image: '/girl_2.png', price: 156.98, quantity: 1 },
+//   { id: 3, image: '/girl_3.png', price: 176.98, quantity: 1 },
+//   { id: 4, image: '/girl_4.png', price: 164.98, quantity: 1 },
+//   { id: 5, image: '/girl_1.png', price: 156.98, quantity: 1 },
+//   { id: 6, image: '/girl_2.png', price: 146.98, quantity: 1 },
+//   { id: 7, image: '/girl_3.png', price: 176.98, quantity: 1 },
+//   { id: 8, image: '/girl_4.png', price: 165.98, quantity: 1 },
+//   // Duplicated items for more slides
+//   { id: 9, image: '/girl_1.png', price: 176.98, quantity: 1 },
+//   { id: 10, image: '/girl_2.png', price: 156.98, quantity: 1 },
+//   { id: 11, image: '/girl_3.png', price: 176.98, quantity: 1 },
+//   { id: 12, image: '/girl_4.png', price: 164.98, quantity: 1 },
+//   { id: 13, image: '/girl_1.png', price: 156.98, quantity: 1 },
+//   { id: 14, image: '/girl_2.png', price: 146.98, quantity: 1 },
+//   { id: 15, image: '/girl_3.png', price: 176.98, quantity: 1 },
+//   // { id: 16, image: '/girl_4.png', price: 165.98, quantity: 1 },
+// ]
 
-const FeaturedCollection = () => {
+const FeaturedCollection = ({ products }: { products: iProduct[] }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<{
     id: number
@@ -80,7 +81,7 @@ const FeaturedCollection = () => {
           }}
           slidesPerView={2}
           slidesPerGroup={4}
-          spaceBetween={16}
+          spaceBetween={6}
           breakpoints={{
             1024: {
               slidesPerView: 4,
@@ -99,15 +100,19 @@ const FeaturedCollection = () => {
           }>
           {products.map((product) => (
             <SwiperSlide key={product.id} className='!h-auto'>
-              <div className='flex flex-col p-3 bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden h-full'>
+              <div className='flex flex-col p-3 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden h-full'>
                 <div className='relative aspect-[3/4] overflow-hidden mb-3'>
                   <Image
-                    src={product.image}
+                    src={
+                      product.images.nodes.length > 0
+                        ? product.images.nodes[0].src
+                        : '/girl_1.png'
+                    }
                     alt='Product'
                     fill
                     className='object-cover'
                     sizes='(max-width: 768px) 50vw, 25vw'
-                    priority={product.id <= 8}
+                    priority={Number(product.id) <= 8}
                   />
                 </div>
 
@@ -115,12 +120,13 @@ const FeaturedCollection = () => {
                 <div className='flex items-center justify-between gap-2 px-1'>
                   <div className='flex items-center gap-2'>
                     <span className='text-gray-900 font-medium'>
-                      ${product.price}
+                      ${product.priceRange.maxVariantPrice.amount}
                     </span>
                   </div>
+
                   <button
                     onClick={() => handleBuyNow(product)}
-                    className='bg-[#7AA65A] text-white text-sm px-3 py-1 rounded-full hover:bg-[#698f4d] transition-colors'>
+                    className='bg-[#7AA65A] text-white text-xs sm:text-sm px-3 py-1 rounded-full hover:bg-[#698f4d] transition-colors'>
                     BUY NOW
                   </button>
                 </div>

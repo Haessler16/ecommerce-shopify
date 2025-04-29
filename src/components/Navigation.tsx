@@ -7,13 +7,18 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useCartStore } from '@/store/cartStore'
 
 const Navigation = () => {
   const pathname = usePathname()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const totalItems = useCartStore((state) => state.getTotalItems())
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const menuItems = [
     { href: '/', label: 'HOME' },
@@ -70,7 +75,7 @@ const Navigation = () => {
               href='/cart'
               className='text-gray-600 hover:text-[#7AA65A] relative'>
               <ShoppingCartIcon className='h-6 w-6' />
-              {totalItems > 0 && (
+              {mounted && totalItems > 0 && (
                 <span className='absolute -top-2 -right-2 bg-[#7AA65A] text-white rounded-full w-5 h-5 flex items-center justify-center text-xs'>
                   {totalItems}
                 </span>
