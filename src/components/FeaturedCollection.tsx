@@ -1,34 +1,70 @@
 'use client'
 
 import Image from 'next/image'
-import Link from 'next/link'
 import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
 import { Navigation, Grid } from 'swiper/modules'
+import { useState } from 'react'
+import ShoppingCartModal from './ShoppingCartModal'
+import { useCartStore } from '@/store/cartStore'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/grid'
 
 const products = [
-  { id: 1, image: '/girl_1.png', price: 176.98 },
-  { id: 2, image: '/girl_2.png', price: 156.98 },
-  { id: 3, image: '/girl_3.png', price: 176.98 },
-  { id: 4, image: '/girl_4.png', price: 164.98 },
-  { id: 5, image: '/girl_1.png', price: 156.98 },
-  { id: 6, image: '/girl_2.png', price: 146.98 },
-  { id: 7, image: '/girl_3.png', price: 176.98 },
-  { id: 8, image: '/girl_4.png', price: 165.98 },
+  { id: 1, image: '/girl_1.png', price: 176.98, quantity: 1 },
+  { id: 2, image: '/girl_2.png', price: 156.98, quantity: 1 },
+  { id: 3, image: '/girl_3.png', price: 176.98, quantity: 1 },
+  { id: 4, image: '/girl_4.png', price: 164.98, quantity: 1 },
+  { id: 5, image: '/girl_1.png', price: 156.98, quantity: 1 },
+  { id: 6, image: '/girl_2.png', price: 146.98, quantity: 1 },
+  { id: 7, image: '/girl_3.png', price: 176.98, quantity: 1 },
+  { id: 8, image: '/girl_4.png', price: 165.98, quantity: 1 },
   // Duplicated items for more slides
-  { id: 9, image: '/girl_1.png', price: 176.98 },
-  { id: 10, image: '/girl_2.png', price: 156.98 },
-  { id: 11, image: '/girl_3.png', price: 176.98 },
-  { id: 12, image: '/girl_4.png', price: 164.98 },
-  { id: 13, image: '/girl_1.png', price: 156.98 },
-  { id: 14, image: '/girl_2.png', price: 146.98 },
-  { id: 15, image: '/girl_3.png', price: 176.98 },
-  { id: 16, image: '/girl_4.png', price: 165.98 },
+  { id: 9, image: '/girl_1.png', price: 176.98, quantity: 1 },
+  { id: 10, image: '/girl_2.png', price: 156.98, quantity: 1 },
+  { id: 11, image: '/girl_3.png', price: 176.98, quantity: 1 },
+  { id: 12, image: '/girl_4.png', price: 164.98, quantity: 1 },
+  { id: 13, image: '/girl_1.png', price: 156.98, quantity: 1 },
+  { id: 14, image: '/girl_2.png', price: 146.98, quantity: 1 },
+  { id: 15, image: '/girl_3.png', price: 176.98, quantity: 1 },
+  // { id: 16, image: '/girl_4.png', price: 165.98, quantity: 1 },
 ]
 
 const FeaturedCollection = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedProduct, setSelectedProduct] = useState<{
+    id: number
+    price: number
+    image: string
+    quantity: number
+  } | null>(null)
+  const cartItems = useCartStore((state) => state.items)
+  const addItem = useCartStore((state) => state.addItem)
+  const removeItem = useCartStore((state) => state.removeItem)
+
+  const handleBuyNow = (product: {
+    id: number
+    price: number
+    image: string
+    quantity: number
+  }) => {
+    setSelectedProduct(product)
+    setIsModalOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+    setSelectedProduct(null)
+  }
+
+  const handleAddToCart = () => {
+    if (selectedProduct) {
+      addItem(selectedProduct)
+      // setIsModalOpen(false)
+      // setSelectedProduct(null)
+    }
+  }
+
   return (
     <section className='py-12 px-4 md:px-8 max-w-7xl mx-auto bg-white'>
       <h2 className='text-[#7AA65A] text-2xl md:text-3xl font-light mb-8 text-center'>
@@ -82,11 +118,11 @@ const FeaturedCollection = () => {
                       ${product.price}
                     </span>
                   </div>
-                  <Link
-                    href={`/product/${product.id}`}
+                  <button
+                    onClick={() => handleBuyNow(product)}
                     className='bg-[#7AA65A] text-white text-sm px-3 py-1 rounded-full hover:bg-[#698f4d] transition-colors'>
                     BUY NOW
-                  </Link>
+                  </button>
                 </div>
               </div>
             </SwiperSlide>
@@ -94,6 +130,14 @@ const FeaturedCollection = () => {
           <NavigationButtons />
         </Swiper>
       </div>
+
+      <ShoppingCartModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        cartItems={cartItems}
+        onRemoveItem={removeItem}
+        onAddToCart={handleAddToCart}
+      />
     </section>
   )
 }
