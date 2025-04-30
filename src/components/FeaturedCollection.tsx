@@ -9,46 +9,71 @@ import { useCartStore } from '@/store/cartStore'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/grid'
-import { iProduct } from '@/utils/interfaces/Product'
 
-// const products = [
-//   { id: 1, image: '/girl_1.png', price: 176.98, quantity: 1 },
-//   { id: 2, image: '/girl_2.png', price: 156.98, quantity: 1 },
-//   { id: 3, image: '/girl_3.png', price: 176.98, quantity: 1 },
-//   { id: 4, image: '/girl_4.png', price: 164.98, quantity: 1 },
-//   { id: 5, image: '/girl_1.png', price: 156.98, quantity: 1 },
-//   { id: 6, image: '/girl_2.png', price: 146.98, quantity: 1 },
-//   { id: 7, image: '/girl_3.png', price: 176.98, quantity: 1 },
-//   { id: 8, image: '/girl_4.png', price: 165.98, quantity: 1 },
-//   // Duplicated items for more slides
-//   { id: 9, image: '/girl_1.png', price: 176.98, quantity: 1 },
-//   { id: 10, image: '/girl_2.png', price: 156.98, quantity: 1 },
-//   { id: 11, image: '/girl_3.png', price: 176.98, quantity: 1 },
-//   { id: 12, image: '/girl_4.png', price: 164.98, quantity: 1 },
-//   { id: 13, image: '/girl_1.png', price: 156.98, quantity: 1 },
-//   { id: 14, image: '/girl_2.png', price: 146.98, quantity: 1 },
-//   { id: 15, image: '/girl_3.png', price: 176.98, quantity: 1 },
-//   // { id: 16, image: '/girl_4.png', price: 165.98, quantity: 1 },
-// ]
+interface CartProduct {
+  id: number
+  title: string
+  price: number
+  image: string
+  quantity: number
+}
 
-const FeaturedCollection = ({ products }: { products: iProduct[] }) => {
+interface ApiProduct {
+  id: string
+  title: string
+  priceRange: {
+    maxVariantPrice: {
+      amount: string
+    }
+  }
+  images: {
+    nodes: {
+      src: string
+    }[]
+  }
+}
+
+interface FeaturedCollectionProps {
+  products: ApiProduct[]
+}
+
+const FeaturedCollection = ({ products }: FeaturedCollectionProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedProduct, setSelectedProduct] = useState<{
-    id: number
-    price: number
-    image: string
-    quantity: number
-  } | null>(null)
+  const [selectedProduct, setSelectedProduct] = useState<CartProduct | null>(
+    null,
+  )
   const cartItems = useCartStore((state) => state.items)
   const addItem = useCartStore((state) => state.addItem)
   const removeItem = useCartStore((state) => state.removeItem)
 
-  const handleBuyNow = (product: {
-    id: number
-    price: number
-    image: string
-    quantity: number
-  }) => {
+  // Transform API data to our format and ensure we have at least 15 items
+  const transformedProducts: CartProduct[] = products.map((product) => ({
+    id: parseInt(product.id.split('/').pop() || '0'),
+    title: product.title,
+    price: parseFloat(product.priceRange.maxVariantPrice.amount),
+    image: product.images.nodes[0]?.src || '/girl_1.png',
+    quantity: 1,
+  }))
+
+  // If we have less than 15 items, duplicate the existing items to reach 15
+  const finalProducts =
+    transformedProducts.length < 15
+      ? [
+          ...transformedProducts,
+          ...Array(15 - transformedProducts.length)
+            .fill(null)
+            .map((_, index) => {
+              const originalIndex = index % transformedProducts.length
+              const originalProduct = transformedProducts[originalIndex]
+              return {
+                ...originalProduct,
+                id: originalProduct.id * 1000 + index, // Create unique IDs for duplicates
+              }
+            }),
+        ]
+      : transformedProducts
+
+  const handleBuyNow = (product: CartProduct) => {
     setSelectedProduct(product)
     setIsModalOpen(true)
   }
@@ -81,7 +106,7 @@ const FeaturedCollection = ({ products }: { products: iProduct[] }) => {
           }}
           slidesPerView={2}
           slidesPerGroup={4}
-          spaceBetween={6}
+          spaceBetween={16}
           breakpoints={{
             1024: {
               slidesPerView: 4,
@@ -98,21 +123,17 @@ const FeaturedCollection = ({ products }: { products: iProduct[] }) => {
               '--swiper-navigation-size': '24px',
             } as React.CSSProperties
           }>
-          {products.map((product) => (
+          {finalProducts.map((product) => (
             <SwiperSlide key={product.id} className='!h-auto'>
-              <div className='flex flex-col p-3 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden h-full'>
+              <div className='flex flex-col p-3 bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden h-full'>
                 <div className='relative aspect-[3/4] overflow-hidden mb-3'>
                   <Image
-                    src={
-                      product.images.nodes.length > 0
-                        ? product.images.nodes[0].src
-                        : '/girl_1.png'
-                    }
-                    alt='Product'
+                    src={product.image}
+                    alt={product.title}
                     fill
                     className='object-cover'
                     sizes='(max-width: 768px) 50vw, 25vw'
-                    priority={Number(product.id) <= 8}
+                    priority={product.id <= 8}
                   />
                 </div>
 
@@ -120,13 +141,12 @@ const FeaturedCollection = ({ products }: { products: iProduct[] }) => {
                 <div className='flex items-center justify-between gap-2 px-1'>
                   <div className='flex items-center gap-2'>
                     <span className='text-gray-900 font-medium'>
-                      ${product.priceRange.maxVariantPrice.amount}
+                      ${product.price.toFixed(2)}
                     </span>
                   </div>
-
                   <button
                     onClick={() => handleBuyNow(product)}
-                    className='bg-[#7AA65A] text-white text-xs sm:text-sm px-3 py-1 rounded-full hover:bg-[#698f4d] transition-colors'>
+                    className='bg-[#7AA65A] text-white text-sm px-3 py-1 rounded-full hover:bg-[#698f4d] transition-colors'>
                     BUY NOW
                   </button>
                 </div>

@@ -1,16 +1,11 @@
 'use client'
 
-interface CartItem {
-  id: number
-  price: number
-  image: string
-  quantity: number
-}
+import { CartProduct } from '@/store/cartStore'
 
 interface ShoppingCartModalProps {
   isOpen: boolean
   onClose: () => void
-  cartItems: CartItem[]
+  cartItems: CartProduct[]
   onRemoveItem: (id: number) => void
   onAddToCart: () => void
 }
@@ -24,7 +19,7 @@ const ShoppingCartModal = ({
 }: ShoppingCartModalProps) => {
   if (!isOpen) return null
 
-  const total = cartItems.reduce((sum, item) => sum + item.price, 0)
+  const total = cartItems.reduce((sum, item) => sum + Number(item.price), 0)
 
   return (
     <div className='fixed inset-0 bg-[#0000008a] flex items-center justify-center z-50'>
@@ -44,7 +39,7 @@ const ShoppingCartModal = ({
                 <div className='flex items-center space-x-3'>
                   <div className='relative w-16 h-16 rounded-lg overflow-hidden'>
                     <img
-                      src={item.image}
+                      src={item.image || '/girl_1.png'}
                       alt='Product'
                       className='object-cover w-full h-full'
                     />
@@ -54,7 +49,9 @@ const ShoppingCartModal = ({
                       Product #{item.id}
                     </p>
                     <p className='text-gray-500'>Quantity: {item.quantity}</p>
-                    <p className='text-[#7AA65A]'>${item.price.toFixed(2)}</p>
+                    <p className='text-[#7AA65A]'>
+                      ${Number(item.price).toFixed(2)}
+                    </p>
                   </div>
                 </div>
                 <button

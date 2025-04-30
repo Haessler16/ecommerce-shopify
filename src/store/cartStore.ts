@@ -1,35 +1,34 @@
-import { create, StateCreator } from 'zustand'
+import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-interface CartItem {
+export interface CartProduct {
   id: number
+  title: string
   price: number
   image: string
   quantity: number
 }
 
 interface CartStore {
-  items: CartItem[]
-  addItem: (item: CartItem) => void
+  items: CartProduct[]
+  addItem: (item: CartProduct) => void
   removeItem: (id: number) => void
   clearCart: () => void
   getTotalItems: () => number
 }
 
-type CartState = StateCreator<CartStore>
-
 export const useCartStore = create<CartStore>()(
   persist(
-    ((set, get) => ({
+    (set, get) => ({
       items: [],
-      addItem: (item: CartItem) => {
+      addItem: (item: CartProduct) => {
         set((state: CartStore) => {
           const existingItem = state.items.find(
-            (i: CartItem) => i.id === item.id,
+            (i: CartProduct) => i.id === item.id,
           )
           if (existingItem) {
             return {
-              items: state.items.map((i: CartItem) =>
+              items: state.items.map((i: CartProduct) =>
                 i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i,
               ),
             }
@@ -39,7 +38,7 @@ export const useCartStore = create<CartStore>()(
       },
       removeItem: (id: number) => {
         set((state: CartStore) => ({
-          items: state.items.filter((item: CartItem) => item.id !== id),
+          items: state.items.filter((item: CartProduct) => item.id !== id),
         }))
       },
       clearCart: () => {
@@ -47,11 +46,11 @@ export const useCartStore = create<CartStore>()(
       },
       getTotalItems: () => {
         return get().items.reduce(
-          (total: number, item: CartItem) => total + item.quantity,
+          (total: number, item: CartProduct) => total + item.quantity,
           0,
         )
       },
-    })) as CartState,
+    }),
     {
       name: 'cart-storage',
     },

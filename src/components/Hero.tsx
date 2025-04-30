@@ -6,35 +6,11 @@ import { Swiper, SwiperSlide, useSwiper } from 'swiper/react'
 import { Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
+import { iProduct } from '@/utils/interfaces/Product'
 
-const slides = [
-  {
-    image: '/girl_1.png',
-    title: 'Lorem ipsum dolor sit amet',
-    subtitle:
-      'Nunc porttitor tortor metus, nec sagittis lectus accumsan quis. Aenean euismod mollis tempor.',
-  },
-  {
-    image: '/girl_2.png',
-    title: 'Consectetur adipiscing elit',
-    subtitle:
-      'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.',
-  },
-  {
-    image: '/girl_3.png',
-    title: 'Sed do eiusmod tempor',
-    subtitle:
-      'Suspendisse potenti. Pellentesque habitant morbi tristique senectus et netus.',
-  },
-  {
-    image: '/girl_4.png',
-    title: 'Ut enim ad minim veniam',
-    subtitle:
-      'Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.',
-  },
-]
+const Hero = ({ products }: { products: iProduct[] }) => {
+  const heroProducts = products.slice(0, 3)
 
-const Hero = () => {
   return (
     <section className='relative min-h-screen w-full overflow-hidden'>
       {/* Background Image */}
@@ -50,18 +26,18 @@ const Hero = () => {
         <Swiper
           modules={[Navigation]}
           className='w-full h-full flex items-center'>
-          {slides.map((slide, idx) => (
-            <SwiperSlide key={idx} className='flex items-center h-full'>
+          {heroProducts.map((product) => (
+            <SwiperSlide key={product.id} className='flex items-center h-full'>
               {/* Desktop Layout */}
               <section className='hidden lg:flex h-full items-center px-20 w-full'>
                 {/* Info */}
                 <div className='flex-1 pr-8 space-y-8'>
                   <div className='space-y-4'>
                     <h1 className='text-[#7AA65A] text-6xl font-light leading-tight'>
-                      {slide.title}
+                      {product.title}
                     </h1>
                     <p className='text-[#7AA65A] text-xl font-light max-w-xl'>
-                      {slide.subtitle}
+                      {product.description}
                     </p>
                   </div>
 
@@ -109,8 +85,8 @@ const Hero = () => {
                 <div className='flex-1 flex justify-end'>
                   <div className='w-[380px] h-[510px] relative rounded-2xl overflow-hidden'>
                     <Image
-                      src={slide.image}
-                      alt='Model'
+                      src={product.images.nodes[0]?.src || '/girl_1.png'}
+                      alt={product.title}
                       fill
                       className='w-full h-auto rounded-2xl'
                       priority
@@ -124,8 +100,8 @@ const Hero = () => {
                 {/* Hero Image */}
                 <div className='w-full max-w-96'>
                   <Image
-                    src={slide.image}
-                    alt='Model'
+                    src={product.images.nodes[0]?.src || '/girl_1.png'}
+                    alt={product.title}
                     width={300}
                     height={300}
                     style={{ objectFit: 'contain' }}
@@ -136,7 +112,7 @@ const Hero = () => {
                 {/* Text */}
                 <div className='text-center space-y-6 mb-8'>
                   <h1 className='text-[#7AA65A] text-4xl font-normal'>
-                    {slide.title}
+                    {product.title}
                   </h1>
 
                   <div className='flex flex-col items-center gap-4'>
@@ -230,4 +206,5 @@ const NavArrows = () => {
     </div>
   )
 }
+
 export default Hero

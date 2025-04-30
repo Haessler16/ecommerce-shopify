@@ -63,7 +63,7 @@ export default async function Home() {
   console.log(info.data.products.nodes)
   return (
     <main>
-      <Hero />
+      <Hero products={info.data.products.nodes} />
       <FeaturedCollection products={info.data.products.nodes} />
     </main>
   )
