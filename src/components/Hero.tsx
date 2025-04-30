@@ -77,8 +77,6 @@ const Hero = ({ products }: { products: iProduct[] }) => {
                       </svg>
                     </Link>
                   </div>
-                  {/* Nav Arrows */}
-                  <NavArrows />
                 </div>
 
                 {/* Hero Image */}
@@ -154,15 +152,18 @@ const Hero = ({ products }: { products: iProduct[] }) => {
                       TAKE THE QUIZ
                     </p>
                   </div>
-
-                  {/* Nav Arrows */}
-                  <div className='flex justify-center items-center'>
-                    <NavArrows />
-                  </div>
                 </div>
               </section>
             </SwiperSlide>
           ))}
+          {/* Navigation Arrows - Desktop */}
+          <div className='hidden lg:block absolute bottom-8 left-20 z-10'>
+            <NavArrows />
+          </div>
+          {/* Navigation Arrows - Mobile */}
+          <div className='lg:hidden absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10'>
+            <NavArrows />
+          </div>
         </Swiper>
       </div>
     </section>
@@ -172,7 +173,7 @@ const Hero = ({ products }: { products: iProduct[] }) => {
 const NavArrows = () => {
   const swiper = useSwiper()
   return (
-    <div className='flex items-center space-x-4 pt-8'>
+    <div className='flex items-center space-x-4'>
       <button
         onClick={() => swiper.slidePrev()}
         className='w-14 h-10 rounded-full border-2 border-[#7AA65A] flex items-center justify-center text-[#7AA65A] hover:bg-[#7AA65A] hover:text-white transition-colors'>
