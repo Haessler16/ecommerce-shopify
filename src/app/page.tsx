@@ -60,7 +60,6 @@ export default async function Home() {
 
   const info: iGraphqlResponse = await response.json()
 
-  console.log(info.data.products.nodes)
   return (
     <main>
       <Hero products={info.data.products.nodes} />
