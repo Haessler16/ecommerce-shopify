@@ -3,7 +3,7 @@ import Hero from '@/components/Hero'
 import FeaturedCollection from '@/components/FeaturedCollection'
 import { iGraphqlResponse } from '@/utils/interfaces/Product'
 
-export const client = createStorefrontClient({
+const shopifyClient = createStorefrontClient({
   storeDomain: process.env.SHOPIFY_STORE_DOMAIN,
   storefrontApiVersion: '2025-01',
   privateStorefrontToken: process.env.SHOPIFY_PRIVATE_TOKEN,
@@ -42,7 +42,7 @@ const GRAPHQL_QUERY = `
 `
 
 export default async function Home() {
-  const response = await fetch(client.getStorefrontApiUrl(), {
+  const response = await fetch(shopifyClient.getStorefrontApiUrl(), {
     body: JSON.stringify({
       query: GRAPHQL_QUERY,
     }),
