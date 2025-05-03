@@ -44,7 +44,7 @@ const Hero = ({ products }: { products: iProduct[] }) => {
                   <div className='flex  gap-4 max-w-md'>
                     <Link
                       href='/shop'
-                      className='w-[226px] h-[57px] inline-flex items-center justify-center bg-[#7AA65A] text-white px-8 py-3 rounded-[10px] text-lg font-medium transition-transform hover:scale-105'>
+                      className='w-[226px] h-[57px] inline-flex items-center justify-center bg-[#7AA65A] text-white px-8 py-3 rounded-[10px] text-[13px] font-[400] transition-transform hover:scale-105'>
                       SHOP NOW
                       <svg
                         className='ml-2 w-5 h-5'
@@ -61,7 +61,7 @@ const Hero = ({ products }: { products: iProduct[] }) => {
                     </Link>
                     <Link
                       href='/quiz'
-                      className='w-[226px] h-[57px] inline-flex items-center justify-center border-2 border-[#7AA65A] text-[#7AA65A] px-8 py-3 rounded-[10px] text-lg font-medium transition-colors hover:bg-[#7AA65A] hover:text-white'>
+                      className='w-[226px] h-[57px] inline-flex items-center justify-center border-2 border-[#7AA65A] text-[#7AA65A] px-8 py-3 rounded-[10px] text-[13px] font-[400] transition-colors hover:bg-[#7AA65A] hover:text-white'>
                       TAKE THE QUIZ
                       <svg
                         className='ml-2 w-5 h-5'
