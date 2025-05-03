@@ -12,7 +12,7 @@ const Hero = ({ products }: { products: iProduct[] }) => {
   const heroProducts = products.slice(0, 3)
 
   return (
-    <section className='relative min-h-screen w-full overflow-hidden'>
+    <section className='relative  w-full overflow-hidden'>
       {/* Background Image */}
       <Image
         src='/sky_2.png'
@@ -22,29 +22,29 @@ const Hero = ({ products }: { products: iProduct[] }) => {
         priority
       />
 
-      <div className='relative h-screen max-w-7xl mx-auto flex items-center'>
+      <div className='relative max-w-7xl mx-auto flex items-center'>
         <Swiper
           modules={[Navigation]}
           className='w-full h-full flex items-center'>
           {heroProducts.map((product) => (
             <SwiperSlide key={product.id} className='flex items-center h-full'>
               {/* Desktop Layout */}
-              <section className='hidden lg:flex h-full items-center px-20 w-full'>
+              <section className='hidden lg:flex h-full items-center px-20 py-10 w-full'>
                 {/* Info */}
                 <div className='flex-1 pr-8 space-y-8'>
                   <div className='space-y-4'>
-                    <h1 className='text-[#7AA65A] text-6xl font-light leading-tight'>
+                    <h1 className='text-[#7AA65A] text-[60px] font-light leading-tight'>
                       {product.title}
                     </h1>
-                    <p className='text-[#7AA65A] text-xl font-light max-w-xl'>
+                    <p className='text-[#7AA65A] text-[16px] font-light max-w-xl'>
                       {product.description}
                     </p>
                   </div>
 
-                  <div className='flex flex-col gap-4 max-w-md'>
+                  <div className='flex  gap-4 max-w-md'>
                     <Link
                       href='/shop'
-                      className='inline-flex items-center justify-center bg-[#7AA65A] text-white px-8 py-3 rounded-full text-lg font-medium transition-transform hover:scale-105'>
+                      className='w-[226px] h-[57px] inline-flex items-center justify-center bg-[#7AA65A] text-white px-8 py-3 rounded-[10px] text-lg font-medium transition-transform hover:scale-105'>
                       SHOP NOW
                       <svg
                         className='ml-2 w-5 h-5'
@@ -61,7 +61,7 @@ const Hero = ({ products }: { products: iProduct[] }) => {
                     </Link>
                     <Link
                       href='/quiz'
-                      className='inline-flex items-center justify-center border-2 border-[#7AA65A] text-[#7AA65A] px-8 py-3 rounded-full text-lg font-medium transition-colors hover:bg-[#7AA65A] hover:text-white'>
+                      className='w-[226px] h-[57px] inline-flex items-center justify-center border-2 border-[#7AA65A] text-[#7AA65A] px-8 py-3 rounded-[10px] text-lg font-medium transition-colors hover:bg-[#7AA65A] hover:text-white'>
                       TAKE THE QUIZ
                       <svg
                         className='ml-2 w-5 h-5'
@@ -80,7 +80,7 @@ const Hero = ({ products }: { products: iProduct[] }) => {
                 </div>
 
                 {/* Hero Image */}
-                <div className='flex-1 flex justify-end'>
+                <div className='flex-1 flex justify-end '>
                   <div className='w-[380px] h-[510px] relative rounded-2xl overflow-hidden'>
                     <Image
                       src={product.images.nodes[0]?.src || '/girl_1.png'}
@@ -94,7 +94,7 @@ const Hero = ({ products }: { products: iProduct[] }) => {
               </section>
 
               {/* Mobile Layout */}
-              <section className='flex flex-col items-center justify-between h-full px-4 py-8 lg:hidden w-full'>
+              <section className='flex flex-col items-center px-4 py-8 lg:hidden w-full'>
                 {/* Hero Image */}
                 <div className='w-full max-w-96'>
                   <Image
@@ -108,15 +108,15 @@ const Hero = ({ products }: { products: iProduct[] }) => {
                   />
                 </div>
                 {/* Text */}
-                <div className='text-center space-y-6 mb-8'>
-                  <h1 className='text-[#7AA65A] text-4xl font-normal'>
+                <div className='text-center space-y-6 mb-8 mt-9'>
+                  <h1 className='text-[#7AA65A] text-[34px] font-[400] '>
                     {product.title}
                   </h1>
 
                   <div className='flex flex-col items-center gap-4'>
                     <Link
                       href='/shop'
-                      className='inline-flex items-center justify-between bg-[#7AA65A] text-white px-8 py-3 rounded-lg text-lg font-medium transition-transform hover:scale-105 w-full max-w-xs'>
+                      className='inline-flex items-center justify-between bg-[#7AA65A] text-white px-8 py-3 rounded-[10px] text-[13px] font-[400] transition-transform hover:scale-105 w-[184px] max-w-xs'>
                       SHOP NOW
                       <svg
                         className='ml-2 w-5 h-5'
@@ -148,7 +148,7 @@ const Hero = ({ products }: { products: iProduct[] }) => {
                         />
                       </svg>
                     </Link>
-                    <p className='lg:hidden text-black text-lg font-medium'>
+                    <p className='lg:hidden text-black text-[13px] font-[400]'>
                       TAKE THE QUIZ
                     </p>
                   </div>
@@ -173,10 +173,10 @@ const Hero = ({ products }: { products: iProduct[] }) => {
 const NavArrows = () => {
   const swiper = useSwiper()
   return (
-    <div className='flex items-center space-x-4'>
+    <div className='flex items-center space-x-1'>
       <button
         onClick={() => swiper.slidePrev()}
-        className='w-14 h-10 rounded-full border-2 border-[#7AA65A] flex items-center justify-center text-[#7AA65A] hover:bg-[#7AA65A] hover:text-white transition-colors'>
+        className='w-[41px] h-[31px] rounded-[99px] border-2 border-[#7AA65A] flex items-center justify-center text-[#7AA65A] hover:bg-[#7AA65A] hover:text-white transition-colors'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           viewBox='0 0 24 24'
@@ -191,7 +191,7 @@ const NavArrows = () => {
       </button>
       <button
         onClick={() => swiper.slideNext()}
-        className='w-14 h-10 rounded-full bg-[#7AA65A] flex items-center justify-center text-white hover:opacity-90 transition-opacity'>
+        className='w-[41px] h-[31px] rounded-[99px] bg-[#7AA65A] flex items-center justify-center text-white hover:opacity-90 transition-opacity'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           viewBox='0 0 24 24'

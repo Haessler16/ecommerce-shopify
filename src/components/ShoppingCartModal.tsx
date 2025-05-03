@@ -7,7 +7,7 @@ interface ShoppingCartModalProps {
   onClose: () => void
   cartItems: CartProduct[]
   onRemoveItem: (id: number) => void
-  onAddToCart: () => void
+  // onAddToCart: () => void
 }
 
 const ShoppingCartModal = ({
@@ -15,8 +15,8 @@ const ShoppingCartModal = ({
   onClose,
   cartItems,
   onRemoveItem,
-  onAddToCart,
-}: ShoppingCartModalProps) => {
+}: // onAddToCart,
+ShoppingCartModalProps) => {
   if (!isOpen) return null
 
   const total = cartItems.reduce((sum, item) => sum + Number(item.price), 0)
@@ -85,17 +85,17 @@ const ShoppingCartModal = ({
           </div>
         )}
 
-        <div className='flex justify-end space-x-4'>
+        <div className='flex justify-start space-x-4'>
           <button
             onClick={onClose}
-            className='px-6 py-2 border-2 border-[#a65a5a] text-[#a65a5a] rounded-full hover:bg-[#a65a5a] hover:text-white transition-colors'>
-            Cancel
+            className='px-6 py-2 border-2 border-[#a65a5a] text-[#a65a5a] rounded-[10px] hover:bg-[#a65a5a] hover:text-white transition-colors'>
+            Cerrar
           </button>
-          <button
+          {/* <button
             onClick={onAddToCart}
             className='px-6 py-2 bg-[#7AA65A] text-white rounded-full hover:opacity-90 transition-opacity'>
             Add to Cart
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

@@ -39,9 +39,9 @@ interface FeaturedCollectionProps {
 
 const FeaturedCollection = ({ products }: FeaturedCollectionProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [selectedProduct, setSelectedProduct] = useState<CartProduct | null>(
-    null,
-  )
+  // const [selectedProduct, setSelectedProduct] = useState<CartProduct | null>(
+  //   null,
+  // )
   const cartItems = useCartStore((state) => state.items)
   const addItem = useCartStore((state) => state.addItem)
   const removeItem = useCartStore((state) => state.removeItem)
@@ -74,22 +74,24 @@ const FeaturedCollection = ({ products }: FeaturedCollectionProps) => {
       : transformedProducts
 
   const handleBuyNow = (product: CartProduct) => {
-    setSelectedProduct(product)
+    // setSelectedProduct(product)
+    addItem(product)
     setIsModalOpen(true)
   }
 
   const handleCloseModal = () => {
     setIsModalOpen(false)
-    setSelectedProduct(null)
+    // setSelectedProduct(null)
   }
 
-  const handleAddToCart = () => {
-    if (selectedProduct) {
-      addItem(selectedProduct)
-      // setIsModalOpen(false)
-      // setSelectedProduct(null)
-    }
-  }
+  // const handleAddToCart = () => {
+
+  //   if (selectedProduct) {
+  //     addItem(selectedProduct)
+  //     // setIsModalOpen(false)
+  //     // setSelectedProduct(null)
+  //   }
+  // }
 
   return (
     <section className='py-12 px-4 md:px-8 max-w-7xl mx-auto bg-white'>
@@ -138,7 +140,7 @@ const FeaturedCollection = ({ products }: FeaturedCollectionProps) => {
                 </div>
 
                 {/* Info */}
-                <div className='flex items-center justify-between gap-2 px-1'>
+                <div className='flex flex-col lg:flex-row items-center justify-between gap-2 px-1'>
                   <div className='flex items-center gap-2'>
                     <span className='text-gray-900 font-medium'>
                       ${product.price.toFixed(2)}
@@ -162,7 +164,7 @@ const FeaturedCollection = ({ products }: FeaturedCollectionProps) => {
         onClose={handleCloseModal}
         cartItems={cartItems}
         onRemoveItem={removeItem}
-        onAddToCart={handleAddToCart}
+        // onAddToCart={handleAddToCart}
       />
     </section>
   )
@@ -171,10 +173,10 @@ const FeaturedCollection = ({ products }: FeaturedCollectionProps) => {
 const NavigationButtons = () => {
   const swiper = useSwiper()
   return (
-    <div className='flex justify-center items-center space-x-2 mt-8'>
+    <div className='flex justify-center items-center space-x-1 mt-8'>
       <button
         onClick={() => swiper.slidePrev()}
-        className='w-14 h-10 rounded-full border-2 border-[#7AA65A] flex items-center justify-center text-[#7AA65A] hover:bg-[#7AA65A] hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed'>
+        className='w-[41px] h-[31px] rounded-[99px] border-2 border-[#7AA65A] flex items-center justify-center text-[#7AA65A] hover:bg-[#7AA65A] hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           viewBox='0 0 24 24'
@@ -190,7 +192,7 @@ const NavigationButtons = () => {
 
       <button
         onClick={() => swiper.slideNext()}
-        className='w-14 h-10 rounded-full bg-[#7AA65A] flex items-center justify-center text-white hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed'>
+        className='w-[41px] h-[31px] rounded-[99px] bg-[#7AA65A] flex items-center justify-center text-white hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
           viewBox='0 0 24 24'
